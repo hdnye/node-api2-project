@@ -1,16 +1,16 @@
 const express = require('express');
-const db = require('./data/db.js');
 const postRouter = require('./routers/postRouter');
 const commentRouter = require('./routers/commentRouter');
 
 const server = express();
 const port = 5500;
 
+//Middleware
 server.use(express.json());
 
 //merge sub-app(postRouter) into main app
-server.use('/routers', postRouter);
-server.use('/routers', commentRouter);
+server.use('/posts', postRouter);
+server.use('/comments', commentRouter);
 
 server.use('/', (req, res) => {
     res.status(200).send('Hello from express app running');
