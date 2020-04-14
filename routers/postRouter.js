@@ -56,7 +56,7 @@ router.post('/', (req, res) => {
           content: req.body.content
        })
        res.status(201).json(newPost)
-        
+        console.log(newPost)
     // If there's an error while saving the post:   
         .catch((error) => {
             console.log(error)
@@ -104,9 +104,11 @@ router.delete('/:id', (req, res) => {
         })
       }
     db.remove(req.params.id) 
-        .then((count) => {
-            if(count > 0) {
-                res.status(200).json()
+        .then((post) => {
+            if(post) {
+                res.status(200).json({
+                    message: 'This Post has been removed.',
+                })
     // If there's an error in removing the post from the database:    
             }  else {
                 res.status(500).json({
