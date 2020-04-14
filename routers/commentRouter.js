@@ -10,8 +10,8 @@ const db = require('../data/db.js');
 // Add server endpoints
 
 // GET comments associated with the post w/ a specific id
-router.get('/:id/:postId', (req, res) => {
-    db.findPostComments(req,params.id, req.params.postId)
+router.get('/:postId', (req, res) => {
+    db.findPostComments(req.params.postId)
         .then((comment) => {
             if(comment)  {
                 res.json(comment)
