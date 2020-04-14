@@ -35,6 +35,7 @@ router.get('/:id', (req, res) => {
         .then((post) => {
             if(post) {
                 res.status(200).json(post)
+    // If the post with the specified id is not found:
             } else {
                 res.status(404).json({
                     message: 'The post with the specified ID does not exist.',

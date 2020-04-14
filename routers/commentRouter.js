@@ -11,25 +11,23 @@ const db = require('../data/db.js');
 
 // GET comments associated with the post w/ a specific id
 router.get('/:postId', (req, res) => {
-    db.findPostComments(req.params.postId)
-        .then((comment) => {
-            if(comment)  {
-                res.json(comment)
+    const postsId = req.params.postId;
+    const comment = db.findPostComments(postsId)
     // If the post with the specified id is not found
+     if(!req.params.postId) {
+         res.status(404).json({
+             message: 'The post with the specified id does not exist'
+         })
+     }  
+             if(comment)  {
+                res.json(comment)
+    // If there's an error in retrieving the comments from the database
             } else {
-                res.status(404).json({
-                    message: 'The post with the specified id does not exist.',
-                })
-            }
-        })
-    //If there's an error in retrieving the comments from the database
-        .catch((error) => {
-            console.log(error)
-            res.status(500).json({
-              message: 'The comments information could not be retrieved.',
-        })
-    })
-})
+                res.status(500).json({
+                    message: 'The comments information could not be retrieved.',
+               })
+         }    
+  })
 
 // GET comments by id
 router.get('/:id', (req, res) => {
@@ -55,12 +53,13 @@ router.get('/:id', (req, res) => {
 
 //CREATE a comment for the post with a specific id using info sent inside a req body
 router.post('/:id', (req, res) => {
-    //If the request body is missing the text property:
+    // If the request body is missing the text property:
     if(!req.body.text) {
         res.status(400).json({
             message: 'Please provide text for the comment.',
         })
      }
+    // If the information about the comment is valid:
      db.insertComment(req.params.id, req.params.postId) 
         .then((comment) => {
             if(comment) {    
