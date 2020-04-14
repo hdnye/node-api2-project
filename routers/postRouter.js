@@ -50,16 +50,14 @@ router.post('/', (req, res) => {
            message: "Please provide title and contents for the post.",
        })     
     }
-   // If the information about the post is valid: 
-    const newPost = db.insert({
-         title: req.body.name,
-         content: req.body.content
-     })
-     db.insert(newPost)
-        .then((post) => {
-            res.status(201).json(post)
-        })
-     // If there's an error while saving the post:   
+    // If the information about the post is valid: 
+      const newPost = db.insert({
+          title: req.body.name,
+          content: req.body.content
+       })
+       res.status(201).json(newPost)
+        
+    // If there's an error while saving the post:   
         .catch((error) => {
             console.log(error)
             res.status(500).json({
