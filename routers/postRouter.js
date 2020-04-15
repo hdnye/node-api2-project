@@ -106,11 +106,12 @@ router.post('/:id/comments', (req, res) => {
         })
      }
     // If the information about the comment is valid:
-     db.insertComment({...req.body, post_id: req.params.id}) 
+    // db.insertComment({...req.body, post_id: req.params.id}) <- this also works
+    db.insertComment(req.params.id)
         .then((comments) => {
-            console.log(comment)
+            console.log(comments)
             if(comments) {    
-                res.status(201).json(req.body)       
+                res.status(201).json(comments)       
      // If the post with the specified id is not found:
             } else { 
                res.status(404).json({
