@@ -46,15 +46,15 @@ router.get('/:id', (req, res) => {
 // CREATE new post
 router.post('/', (req, res) => {
     // If the request body is missing the title or contents property:
-    if(!req.body.name || !req.body.content) {
+    if(!req.body.title || !req.body.contents) {
        return res.status(400).json({
            message: "Please provide title and contents for the post.",
        })     
     }
     // If the information about the post is valid: 
       const newPost = db.insert({
-          title: req.body.name,
-          content: req.body.content
+          title: req.body.title,
+          contents: req.body.contents
        })
        res.status(201).json(newPost)
         console.log(newPost)
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
 // UPDATE the post by id
 router.put('/:id', (req, res) => {
    //If the request body is missing the title or contents property:
-    if(!req.body.name || !req.body.content) {
+    if(!req.body.title || !req.body.contents) {
         return res.status(404).json({
             message: 'Please provide title and contents for the post.',
         })
@@ -96,6 +96,36 @@ router.put('/:id', (req, res) => {
  })
 })
 
+//CREATE a comment for the post with a specific id using info sent inside a req body
+router.post('/:id/comments', (req, res) => {
+    console.log('Here')
+    // If the request body is missing the text property:
+    if(!req.body.text) {
+        res.status(400).json({
+            message: 'Please provide text for the comment.',
+        })
+     }
+    // If the information about the comment is valid:
+     db.insertComment({...req.body, post_id: req.params.id}) 
+        .then((comments) => {
+            console.log(comment)
+            if(comments) {    
+                res.status(201).json(req.body)       
+     // If the post with the specified id is not found:
+            } else { 
+               res.status(404).json({
+                   message: 'The post with the specified ID does not exist.',
+               })
+           }
+        })     
+    // If there's an error while saving the comment:    
+        .catch((error) => {
+            console.log(error)
+            res.status(500).json({
+                message: 'There was an error while saving the comment to the database.',
+            })
+       })
+    })
 // DELETE post by id
 router.delete('/:id', (req, res) => {
     // If the post with the specified id is not found:

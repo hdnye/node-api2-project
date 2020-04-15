@@ -16,7 +16,6 @@ server.use('/', (req, res) => {
     res.status(200).send('Hello from express app running');
 });
 
-
 server.listen(port, () => {
     console.log(`server listening at http://localhost:${port}`);
 });
